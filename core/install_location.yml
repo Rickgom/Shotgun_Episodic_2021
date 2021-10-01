@@ -3,7 +3,7 @@
 # This file reflects the paths in the primary pipeline
 # configuration defined for this project.
 
-Windows: 'U:\SHOTGUN\pipeline_configs\DEMO_ENTROPY'
+Windows: 'U:\SHOTGUN\pipeline_configs\AL_PATI_ALHAMBRA'
 Darwin: ''
 Linux: ''
 
