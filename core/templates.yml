@@ -428,9 +428,7 @@ paths:
     nuke_shot_publish:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_{name}_v{version}.nk'
     # write node outputs
-    nuke_element_publish_exr:
-        definition: '@shot_root/assets/{nuke.output}/v{version}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
-    nuke_element_precomp_exr:
+    nuke_element_publish:
         definition: '@shot_root/{Step}/elements/v{version}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
     nuke_render_publish:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_ENT_{nuke.output}_v{version}/{Shot}_ENT_{nuke.output}_v{version}.{SEQ}.exr'

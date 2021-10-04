@@ -36,18 +36,18 @@ settings.tk-nuke-writenode.shot:
   template_script_work: nuke_shot_work
   write_nodes:
   - file_type: exr
-    name: Stereo Exr, 32 bit
+    name: Write Element COMP
     proxy_publish_template:
     proxy_render_template:
-    publish_template: nuke_shot_render_pub_stereo
-    render_template: nuke_shot_render_stereo
+    publish_template: nuke_element_publish
+    render_template: nuke_render_publish
     settings:
-      datatype: 32 bit float
+      datatype: 16 bit half
     tank_type: Rendered Image
     tile_color: []
     promote_write_knobs: []
   - file_type: exr
-    name: Stereo Exr, 16 bit
+    name: Write Render COMP
     promote_write_knobs: []
     proxy_publish_template:
     proxy_render_template:
