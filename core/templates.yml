@@ -437,11 +437,7 @@ paths:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_{nuke.output}_v{version}_quickreview.mov'
     nuke_shot_render_movie:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_{nuke.output}_v{version}.mov'
-    # Node publishing
-    nuke_node_publish:
-        definition: '@shot_root/assets/nuke/nodes/{nuke_node}_v{version}.nk'
-    nuke_cam_publish:
-        definition: '@shot_root/assets/camera/v{version}/{Shot}_camera_v{version}.abc'
+    
 
     #
     # Hiero
