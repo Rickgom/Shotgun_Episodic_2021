@@ -1,2 +1,6 @@
-{pc_id: 743, pc_name: Primary, project_id: 685, project_name: AL_PATI_ALHAMBRA, published_file_entity_type: PublishedFile,
-  use_shotgun_path_cache: true}
+pc_id: 840
+pc_name: Primary
+project_id: 685
+project_name: AL_PATI_ALHAMBRA
+published_file_entity_type: PublishedFile
+use_shotgun_path_cache: true

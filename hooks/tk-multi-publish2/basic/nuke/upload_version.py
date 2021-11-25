@@ -219,33 +219,39 @@ class UploadVersionPlugin(HookBaseClass):
 
 
 
-        def get_path_to_frames():
 
-            change_folder = path.replace('\mov', '/exr')
-            change_file_extension = change_folder.replace('.mov', '.####.exr')
-            return change_file_extension
 
+        def get_path_to_frames():            
+            head, tail = os.path.split(path)
+            version_path = str(head)
+            version_name = str(tail)[:-4]
+            published_file_path = '%s/%s/%s.####.exr' % (version_path, version_name, version_name)
+            return published_file_path
+       
 
 
         def get_userID():
             import os
-            userName = os.environ['USERNAME']
-            userDict = {'bgil': 286, 'daniel': 61, 'david': 58, 'dnicolas': 70, 'dperea': 152, 'hector': 62,
-                        'jaime': 53, 'jordi': 54, 'jalvarez': 72, 'jgomez': 151, 'lgarcia': 118, 'lucia': 63,
-                        'mduque': 187, 'mmartinez': 319, 'pedro': 51, 'pibanez': 153,  'freelance': 385, 'fernando': 67, 'dgaratachea': 616, 'rgomez': 550}
-            sg_user = userDict.get(userName)
-            return sg_user
+            tk = sgtk.platform.current_engine()            
+            user = os.environ['USERNAME']
+            filters = [["login", "is", user]]
+            
+            user_Id = int(tk.shotgun.find('HumanUser', filters, ['id'])[0]['id'])
+            return user_Id
+
 
 
 
         version_data = {
             "sg_path_to_frames": get_path_to_frames(),
-            "project": item.context.project,
+            "project": item.context.project, 
             "code": publish_name,
             "description": item.description,
             "entity": self._get_version_entity(item),
             "sg_task": item.context.task,
-            "user": {'type': 'HumanUser', 'id': get_userID()}
+            "user": {'type': 'HumanUser', 'id': get_userID()},
+            "created_by": {'type': 'HumanUser', 'id': get_userID()},
+            "updated_by": {'type': 'HumanUser', 'id': get_userID()}
         }
 
         if "sg_publish_data" in item.properties:

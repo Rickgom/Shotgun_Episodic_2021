@@ -129,3 +129,7 @@ apps.tk-mari-projectmanager.location:
   type: app_store
   version: v1.3.0
 frameworks: '@frameworks'
+apps.rtm-tk-hiero-shotgunDropper.location:
+  type: git
+  path: https://github.com/RicardoMusch/rtm-tk-hiero-shotgunDropper.git
+  version: v0.2

@@ -95,7 +95,112 @@ class NukeSessionCollector(HookBaseClass):
         else:
             # running nuke. ensure additional collected outputs are parented
             # under the session
-            project_item = self.collect_outputs(settings, parent_item)
+            project_item = self.collect_daily_exr(settings, parent_item)
+
+        # run node collection if not in hiero
+        if hasattr(engine, "hiero_enabled") and not engine.hiero_enabled:
+            #self.collect_daily_exr(settings, project_item)
+            self.collect_outputs(settings, project_item)
+            self.collect_nuke_backup(settings, project_item)
+
+
+    def collect_nuke_backup(self, settings, parent_item):
+        """
+        Analyzes the current session open in Nuke and parents a subtree of items
+        under the parent_item passed in.
+
+        :param dict settings: Configured settings for this collector
+        :param parent_item: Root item instance
+        """
+
+        publisher = self.parent
+
+        # get the current path
+        pathEXR = nuke.selectedNode().knob('file').value()
+        head, tail = os.path.split(pathEXR)       
+        path = str(head)+'.nk'
+
+        # determine the display name for the item
+        if path:
+            file_info = publisher.util.get_file_path_components(path)
+            display_name = file_info["filename"]
+        else:
+            display_name = "Current Nuke Session"
+
+        # create the session item for the publish hierarchy
+        session_item = parent_item.create_item(
+            "nuke.session", "Nuke Script", display_name
+        )
+
+        # get the icon path to display for this item
+        icon_path = os.path.join(self.disk_location, os.pardir, "icons", "nuke.png")
+        session_item.set_icon_from_path(icon_path)
+
+        # if a work template is defined, add it to the item properties so
+        # that it can be used by attached publish plugins
+        work_template_setting = settings.get("Work Template")
+        if work_template_setting:
+            work_template = publisher.engine.get_template_by_name('nuke_shot_publish')
+
+            # store the template on the item for use by publish plugins. we
+            # can't evaluate the fields here because there's no guarantee the
+            # current session path won't change once the item has been created.
+            # the attached publish plugins will need to resolve the fields at
+            # execution time.
+            session_item.properties["work_template"] = work_template
+            self.logger.debug("Work template defined for Nuke collection.")
+
+        self.logger.info("Collected current Nuke script")
+        session_item.context_change_allowed = True
+        return session_item
+
+    def collect_daily_exr(self, settings, parent_item):
+        """
+        Analyzes the current session open in Nuke and parents a subtree of items
+        under the parent_item passed in.
+
+        :param dict settings: Configured settings for this collector
+        :param parent_item: Root item instance
+        """
+
+        publisher = self.parent
+
+        # get the current path
+        pathEXR = nuke.selectedNode().knob('file').value()
+        head, tail = os.path.split(pathEXR)
+        version_path = str(head)
+        version_name = str(tail)[:-4]
+        file_path = '%s/%s/%s.####.exr' % (version_path, version_name, version_name)
+
+
+
+
+
+        # file exists, let the basic collector handle it
+        item = super(NukeSessionCollector, self)._collect_file(
+            parent_item, file_path, frame_sequence=False
+        )
+
+
+
+
+
+        current_engine = sgtk.platform.current_engine()
+        render_template = current_engine.get_template_by_name('nuke_render_publish')
+        render_path_fields = render_template.get_fields(file_path)
+        shot_name = render_path_fields.get("Shot")
+        task_name = render_path_fields.get("nuke.output")
+        version_number = render_path_fields.get("version")
+
+        #sg_publish_data = ('%s_%s_%s') % (shot_name, task_name, version_number)
+        #item.properties['sg_publish_data'] = sg_publish_data
+        #item.properties["publish_name"] = ('%s_%s_%s') % (shot_name, task_name, version_number)
+        item.properties["publish_version"] = version_number
+        #item.properties['context'] = task_name
+        item.thumbnail_enabled = True
+        item.context_change_allowed = True
+        return item
+
 
 
     def collect_outputs(self, settings, parent_item):
@@ -126,7 +231,7 @@ class NukeSessionCollector(HookBaseClass):
 
                 # file exists, let the basic collector handle it
                 item = super(NukeSessionCollector, self)._collect_file(
-                    parent_item, file_path, frame_sequence=True
+                    parent_item, file_path, frame_sequence=False
                 )
 
 
@@ -134,55 +239,45 @@ class NukeSessionCollector(HookBaseClass):
 
                 #SUBMIT FOR REVIEW
 
-                rendered_files = file_path
+                #rendered_files = file_path
 
 
                 # some files rendered, use first frame to get some publish item info
-                path = rendered_files[0]
+                #path = rendered_files[0]
 
 
-                publish_path = file_path
+                #publish_path = file_path
 
                 # construct publish name:
                 current_engine = sgtk.platform.current_engine()
-                render_template = current_engine.get_template_by_name('nuke_render_publish')
-                render_path_fields = render_template.get_fields(publish_path)
+                render_template = current_engine.get_template_by_name('nuke_shot_render_movie')
+                render_path_fields = render_template.get_fields(file_path)
 
-                rp_name = render_path_fields.get("name")
-                rp_channel = render_path_fields.get("channel")
-                if not rp_name and not rp_channel:
-                    publish_name = "Publish"
-                elif not rp_name:
-                    publish_name = "Channel %s" % rp_channel
-                elif not rp_channel:
-                    publish_name = rp_name
-                else:
-                    publish_name = "%s, Channel %s" % (rp_name, rp_channel)
                 shot_name = render_path_fields.get("Shot")
                 task_name = render_path_fields.get("nuke.output")
                 version_number = render_path_fields.get("version")
-
-                sg_publish_data = ('%s_%s_%s.mov') % (shot_name, task_name, version_number)
-                item.properties['sg_publish_data'] = sg_publish_data
-
-
-                item.properties["color_space"] = 'Output - Rec.709'
-
-                item.properties["first_frame"] = first_frame
-                item.properties["last_frame"] = last_frame
-                item.properties["path"] = publish_path
-                item.properties["publish_name"] = ('%s_%s') % (shot_name, task_name)
-                item.properties["publish_template"] = render_template
-                item.properties["work_template"] = render_template
-                item.properties["sequence_paths"] = rendered_files
+                #
+                #publish_name = ('%s_%s_%s') % (shot_name, task_name, version_number)
+#
+#
+                #sg_publish_data = ('%s_%s_%s.mov') % (shot_name, task_name, version_number)
+                #item.properties['sg_publish_data'] = sg_publish_data
+#
+                #item.properties["first_frame"] = first_frame
+                #item.properties["last_frame"] = last_frame
+                #item.properties["path"] = publish_path
+                #item.properties["publish_name"] = ('%s_%s') % (shot_name, task_name)
+                #item.properties["publish_template"] = render_template
+                #item.properties["work_template"] = render_template
+                #item.properties["sequence_paths"] = rendered_files
                 item.properties["publish_version"] = version_number
                 item.thumbnail_enabled = True
 
                 # the item has been created. update the display name to include
                 # the nuke node to make it clear to the user how it was
                 # collected within the current session.
-                item.name = "%s (%s)" % (item.name, node.name())
-
+                #item.name = ('%s_%s_%s.mov') % (shot_name, task_name, version_number)
+                item.context_change_allowed = True
 
     def _get_node_colorspace(self, node):
         """

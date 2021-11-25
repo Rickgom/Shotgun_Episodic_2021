@@ -50,7 +50,7 @@ settings.tk-multi-publish2.3dsmaxplus.asset_step: &settings_tk-multi-publish2_3d
     hook: "{self}/upload_version.py"
     settings: {}
   - name: Begin file versioning
-    hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
+    hook: "{self}/tk-multi-publish2/basic/start_version_control.py"
     settings: {}
   - name: Publish to Shotgun
     hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
@@ -243,7 +243,7 @@ settings.tk-multi-publish2.nuke.asset_step:
     settings:
         Publish Template: nuke_asset_publish
   - name: Submit for Review
-    hook: "{config}/tk-multi-publish2/basic/nuke/submit_for_review.py"
+    hook: "{engine}/tk-multi-publish2/basic/submit_for_review.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -258,7 +258,7 @@ settings.tk-multi-publish2.nuke.shot_step:
     hook: "{self}/publish_file.py:{config}/tk-multi-publish2/basic/nuke/publish_file.py"
     settings: {}
   - name: Upload for review
-    hook: "{config}/tk-multi-publish2/basic/nuke/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/basic/nuke/upload_version.py"
     settings: {}
   - name: Begin file versioning
     hook: "{engine}/tk-multi-publish2/basic/nuke_start_version_control.py"
@@ -268,7 +268,7 @@ settings.tk-multi-publish2.nuke.shot_step:
     settings:
         Publish Template: nuke_shot_publish
   - name: Submit for Review
-    hook: "{config}/tk-multi-publish2/basic/nuke/submit_for_review.py"
+    hook: "{engine}/tk-multi-publish2/basic/submit_for_review.py"
     settings: {}
   - name: Update Flame Clip
     hook: "{engine}/tk-multi-publish2/basic/nuke_update_flame_clip.py"

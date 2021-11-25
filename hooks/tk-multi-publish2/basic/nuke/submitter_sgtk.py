@@ -93,14 +93,21 @@ class SubmitterSGTK(HookBaseClass):
 
         # Create the version in Shotgun
         ctx = self.__app.context
+        
+
+
         def get_userID():
             import os
-            userName = os.environ['USERNAME']
-            userDict = {'bgil': 286, 'daniel': 61, 'david': 58, 'dnicolas': 70, 'dperea': 152, 'hector': 62,
-                        'jaime': 53, 'jordi': 54, 'jalvarez': 72, 'jgomez': 151, 'lgarcia': 118, 'lucia': 63,
-                        'mduque': 187, 'mmartinez': 319, 'pedro': 51, 'pibanez': 153,  'freelance': 385, 'fernando': 67, 'dgaratachea': 616, 'rgomez': 550}
-            sg_user = userDict.get(userName)
-            return sg_user
+            tk = sgtk.platform.current_engine()            
+            user = os.environ['USERNAME']
+            filters = [["login", "is", user]]
+            
+            user_Id = int(tk.shotgun.find('HumanUser', filters, ['id'])[0]['id'])
+            return user_Id
+
+
+
+            
         data = {
             "code": name,
             "sg_status_list": self.__app.get_setting("new_version_status"),
@@ -109,8 +116,8 @@ class SubmitterSGTK(HookBaseClass):
             "sg_first_frame": first_frame,
             "sg_last_frame": last_frame,
             "sg_frames_have_slate": False,
-            "created_by": {'type': 'HumanUser', 'id': get_userID()},
-            "user": {'type': 'HumanUser', 'id': get_userID()},
+            "created_by": get_userID(),
+            "user": get_userID(),
             "description": description,
             "sg_path_to_frames": path_to_frames,
             "sg_movie_has_slate": True,

@@ -387,14 +387,23 @@ class BasicFilePublishPlugin(HookBaseClass):
 
 
 
+
+
+
+
+
         def get_userID():
             import os
-            userName = os.environ['USERNAME']
-            userDict = {'bgil': 286, 'daniel': 61, 'david': 58, 'dnicolas': 70, 'dperea': 152, 'hector': 62,
-                        'jaime': 53, 'jordi': 54, 'jalvarez': 72, 'jgomez': 151, 'lgarcia': 118, 'lucia': 63,
-                        'mduque': 187, 'mmartinez': 319, 'pedro': 51, 'pibanez': 153,  'freelance': 385, 'fernando': 67, 'dgaratachea': 616, 'rgomez': 550}
-            sg_user = userDict.get(userName)
-            return sg_user
+            tk = sgtk.platform.current_engine()            
+            user = os.environ['USERNAME']
+            filters = [["login", "is", user]]
+            
+            user_Id = int(tk.shotgun.find('HumanUser', filters, ['id'])[0]['id'])
+            return user_Id
+
+
+
+
 
 
         # handle copying of work to publish if templates are in play
@@ -416,6 +425,7 @@ class BasicFilePublishPlugin(HookBaseClass):
             "dependency_ids": publish_dependencies_ids,
             "sg_fields": publish_fields,
         }
+
 
         # add extra kwargs
         publish_data.update(publish_kwargs)

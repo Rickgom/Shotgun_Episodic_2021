@@ -198,7 +198,7 @@ paths:
     maya_asset_root: 3D/PROJECT_MAYA/scenes/assets/{sg_asset_type}/{Asset}/{Step}
     maya_sequence_root: 3D/PROJECT_MAYA/scenes/{Episode}/{Sequence}
 
-    maya_shot_playblast : '@maya_root/images/publish/review/{Sequence}/{Shot}/{Step}/{Shot}.v{version}.mov'
+    maya_shot_playblast : '@maya_root/images/publish/review/{Episode}/{Sequence}/{Shot}/{Step}/{Shot}.v{version}.mov'
     maya_asset_playblast : '@maya_root/images/publish/review/assets/{sg_asset_type}/{Asset}/{Step}/{Shot}.v{version}.mov'
 
     houdini_root: 3D/PROJECT_HOUDINI
@@ -278,9 +278,9 @@ paths:
     shot_publish_area_photoshop:
         definition: '@shot_root/{Step}/render/psd'
     photoshop_shot_publish:
-        definition: '@shot_root/{Step}/render/{Shot}_{task_name}_v{version}.psd'
+        definition: '@shot_root/{Step}/render/v{version}/{Shot}_{name}_v{version}.psd'
     photoshop_shot_publish_exr:
-        definition: '@shot_root/{Step}/render/{Shot}_{task_name}_v{version}/{Shot}_{task_name}_v{version}.exr'
+        definition: '@shot_root/{Step}/render/{Shot}_{task_name}_v{version}/{Shot}_{name}_v{version}.exr'
 
     #
     # After Effects
@@ -431,7 +431,7 @@ paths:
     nuke_element_publish:
         definition: '@shot_root/{Step}/elements/v{version}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
     nuke_render_publish:
-        definition: '@shot_root/{Step}/render/v{version}/{Shot}_ENT_{nuke.output}_v{version}/{Shot}_ENT_{nuke.output}_v{version}.{SEQ}.exr'
+        definition: '@shot_root/{Step}/render/v{version}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
     # review output
     shot_quicktime_quick:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_{nuke.output}_v{version}_quickreview.mov'
@@ -468,17 +468,17 @@ paths:
 
     # The location of WIP files
     photoshop_asset_work:
-        definition: '@asset_root/{Step}/scripts/photoshop/{Asset}_{name}_v{version}.psd'
+        definition: '@asset_root/{Step}/scripts/photoshop/{Asset}_{task_name}_{name}_v{version}.psd'
     asset_work_area_photoshop:
         definition: '@asset_root/{Step}/scripts/photoshop/'
     # The location of backups of WIP files
     photoshop_asset_snapshot:
-        definition: '@asset_root/{Step}/scripts/photoshop/snapshots/{Asset}_{name}_v{version}_{timestamp}.psd'
+        definition: '@asset_root/{Step}/scripts/photoshop/snapshots/{Asset}_{task_name}_{name}_v{version}_{timestamp}.psd'
     # The location of published files
     asset_publish_area_photoshop:
         definition: '@asset_root/{Step}/render/psd'
     photoshop_asset_publish:
-        definition: '@asset_root/{Step}/render/v{version}/{Asset}_{name}_v{version}.psd'
+        definition: '@asset_root/{Step}/render/v{version}/{Asset}_{task_name}_{name}_v{version}.psd'
 
     #
     # after effects
