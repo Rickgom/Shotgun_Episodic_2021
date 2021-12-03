@@ -247,6 +247,7 @@ class RenderMedia(HookBaseClass):
                 # Nuke 9.0v1 changed the codec knob name to meta_codec and added an encoder knob
                 # (which defaults to the new mov64 encoder/decoder).
                 settings["mov64_codec"] = "jpeg"
+                settings["colorspace"] = 'color_picking'
             else:
                 settings["codec"] = "jpeg"
 

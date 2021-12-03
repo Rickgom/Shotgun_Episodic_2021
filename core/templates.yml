@@ -636,9 +636,7 @@ paths:
         definition: '@asset_root/{Step}/render/v{version}/{Asset}_{name}_v{version}.nk'
     # write node outputs
     nuke_element_publish_asset:
-        definition: '@asset_root/asset/nuke.output/v{version}/{Asset}_{nuke.output}_v{version}/{Asset}_{nuke.output}_v{version}.{SEQ}.exr'
-    nuke_element_precomp_asset:
-        definition: '@asset_root/{Step}/elements/v{version}/{Asset}_{nuke.output}_v{version}/{Asset}_{nuke.output}_v{version}.{SEQ}.exr'
+        definition: '@asset_root/{Step}/elements/{nuke.output}/{Asset}_{nuke.output}_v{version}/{Asset}_{nuke.output}_v{version}.{SEQ}.exr'
     nuke_render_publish_asset:
         definition: '@asset_root/{Step}/render/v{version}/{Asset}_{nuke.output}_v{version}/{Asset}_{nuke.output}_v{version}.{SEQ}.exr'
     # review output
@@ -646,6 +644,8 @@ paths:
         definition: '@asset_root/{Step}/render/v{version}/{Asset}_{nuke.output}_v{version}_quickreview.mov'
     nuke_asset_render_movie:
         definition: '@asset_root/{Step}/render/v{version}/{Asset}_{nuke.output}_v{version}.mov'
+    nuke_asset_elements_movie:
+        definition: '@asset_root/{Step}/elements/{nuke.output}/_movies/{Asset}_{nuke.output}_v{version}.mov'
     # Node publishing
     nuke_node_publish_asset:
         definition: '@asset_root/asset/nuke/nodes/{nuke_node}/{nuke_node}_v{version}.nk'
