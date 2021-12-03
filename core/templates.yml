@@ -429,7 +429,9 @@ paths:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_{name}_v{version}.nk'
     # write node outputs
     nuke_element_publish:
-        definition: '@shot_root/{Step}/elements/v{version}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
+        definition: '@shot_root/{Step}/elements/{nuke.output}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
+    nuke_elements_movie:
+        definition: '@shot_root/{Step}/elements/{nuke.output}/_movies/{Shot}_{nuke.output}_v{version}.mov'
     nuke_render_publish:
         definition: '@shot_root/{Step}/render/v{version}/{Shot}_{nuke.output}_v{version}/{Shot}_{nuke.output}_v{version}.{SEQ}.exr'
     # review output

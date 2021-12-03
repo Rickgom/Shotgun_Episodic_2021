@@ -21,12 +21,14 @@ includes:
 settings.tk-multi-reviewsubmission.nuke.asset:
   movie_path_template: nuke_asset_render_movie
   slate_logo: icons/review_submit_logo.png
+  render_media_hook: '{self}/render_media.py:{config}/tk-multi-publish2/basic/nuke/render_media.py'
   location: "@apps.tk-multi-reviewsubmission.location"
 
 # shot
 settings.tk-multi-reviewsubmission.nuke.shot:
-  movie_path_template: nuke_shot_render_movie
+  movie_path_template: nuke_elements_movie
   slate_logo: icons/review_submit_logo.png
+  render_media_hook: '{self}/render_media.py:{config}/tk-multi-publish2/basic/nuke/render_media.py'
   location: "@apps.tk-multi-reviewsubmission.location"
 
 # Maya Playblast
