@@ -75,6 +75,10 @@ class HieroGetShot(Hook):
        # find episode name from the tags on the sequence
        nuke_studio_episode = None
        for t in hiero_sequence.tags():
+
+           ###### PARA CAMBIAR LAS INICIALES DEL TAG ######
+           ###### El tag que se utilice en HIERO para asignar a la secuencia y crear el episodio, debe empezar por el valor que le asignemos
+           ###### en la línea sigiente, después de startswith. Es el valor que hay entre comillado y entre paréntesis Ejemplo: ('NAT_')
            if t.name().startswith('LCDLA_'):
                nuke_studio_episode = t
                break

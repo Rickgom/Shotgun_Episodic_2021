@@ -247,7 +247,17 @@ class RenderMedia(HookBaseClass):
                 # Nuke 9.0v1 changed the codec knob name to meta_codec and added an encoder knob
                 # (which defaults to the new mov64 encoder/decoder).
                 settings["mov64_codec"] = "jpeg"
+
+
+                ################# IMPORTANTE LEEEEEEMEEEEEEE ###########################################################################################
+                ############# En caso de no ser espacio de color ACES cambiar el valor 'color_picking' por 'default (Gamma2.2)' ########################
+                #### En caso de no saber cual es el valor del colorspace, en Nuke con un write seleccionado y con el colorspace deseado puesto, ########
+                #### ejecutar este código en el script editor: print nuke.selectedNode().knob('colorspace').value()
+                
+
                 settings["colorspace"] = 'color_picking'
+            
+
             else:
                 settings["codec"] = "jpeg"
 
